@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "CalToMark",
+    "version": "1.0",
+    "permissions": [
+      "activeTab",
+      "scripting"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://calendar.google.com/*"],
+        "js": ["contentScript.js"]
+      }
+    ]
+  }
+  
