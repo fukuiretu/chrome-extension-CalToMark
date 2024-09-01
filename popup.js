@@ -1,17 +1,23 @@
-document.getElementById('getSchedule').addEventListener('click', async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+document.addEventListener('DOMContentLoaded', () => {
+    // 起動時にローカルストレージからデータを読み込む
+    const savedData = localStorage.getItem('markdownData');
+    if (savedData) {
+        document.getElementById('markdownOutput').value = savedData;
+    }
+});
 
-  chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: extractSchedule
-  }, (results) => {
-      if (results && results.length > 0) {
-          const markdown = results[0].result;
-          document.getElementById('markdownOutput').value = markdown;
-      } else {
-          document.getElementById('markdownOutput').value = "Failed to retrieve schedule.";
-      }
-  });
+document.getElementById('getSchedule').addEventListener('click', async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        function: extractSchedule
+    }, (results) => {
+        const markdown = results[0].result;
+        document.getElementById('markdownOutput').value = markdown;
+
+        // 取得したデータをローカルストレージに保存
+        localStorage.setItem('markdownData', markdown);
+    });
 });
 
 function extractSchedule() {
@@ -53,7 +59,7 @@ function extractSchedule() {
 
     for (const date in eventsByDate) {
         markdown += `# ${date}\n`;
-        markdown += eventsByDate[date].join('\n') + '\n';
+        markdown += eventsByDate[date].join('\n') + '\n\n';
     }
 
     return markdown;
