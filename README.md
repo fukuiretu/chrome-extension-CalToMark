@@ -1,2 +1,2 @@
 # chrome-extension-CalToMark
-ブラウザで表示したGoogleカレンダーから昨日/今日/明日の予定を抽出しMarkdownのListに変換するChrome拡張
+ブラウザで表示したGoogleカレンダーから予定を抽出し、日付ごとにMarkdownのListに変換するChrome拡張
